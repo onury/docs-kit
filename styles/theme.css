@@ -1,0 +1,194 @@
+/* ===========================================================================
+ * theme.css — Starlight design tokens (colors, typography, layout)
+ * ---------------------------------------------------------------------------
+ * READY TO EDIT. Everything below is COMMENTED OUT so the site keeps its
+ * current look until you opt in — uncomment a block and tweak the values.
+ *
+ * This file is wired in `astro.config.mjs` → starlight({ customCss: [...] }).
+ * Fonts and the frosted-glass header live in `custom.css` (loaded first).
+ *
+ * Starlight applies DARK theme on `:root` and LIGHT theme on
+ * `:root[data-theme='light']`. Override the ramp/accent for each.
+ *
+ * Tip: the easiest way to pick a palette is Starlight's Color Theme Editor:
+ *   https://starlight.astro.build/guides/css-and-tailwind/#color-theme-editor
+ * Paste its output over the two blocks below.
+ * Full list of variables:
+ *   https://starlight.astro.build/guides/css-and-tailwind/#styling-starlight
+ * =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+ * 1) COLORS — DARK theme (the default). Uncomment & edit.
+ * ------------------------------------------------------------------------- */
+/*
+:root {
+  --sl-color-accent-low: #131e4f;
+  --sl-color-accent: #3447ff;
+  --sl-color-accent-high: #b3c7ff;
+
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #eceef2;
+  --sl-color-gray-2: #c0c2c7;
+  --sl-color-gray-3: #888b96;
+  --sl-color-gray-4: #545861;
+  --sl-color-gray-5: #353841;
+  --sl-color-gray-6: #24272f;
+  --sl-color-black: #17181c;
+}
+*/
+
+/* ---------------------------------------------------------------------------
+ * 2) COLORS — LIGHT theme. Uncomment & edit.
+ * ------------------------------------------------------------------------- */
+/*
+:root[data-theme='light'] {
+  --sl-color-accent-low: #d6e0ff;
+  --sl-color-accent: #364bff;
+  --sl-color-accent-high: #182775;
+
+  --sl-color-white: #17181c;
+  --sl-color-gray-1: #24272f;
+  --sl-color-gray-2: #353841;
+  --sl-color-gray-3: #545861;
+  --sl-color-gray-4: #888b96;
+  --sl-color-gray-5: #c0c2c7;
+  --sl-color-gray-6: #eceef2;
+  --sl-color-gray-7: #f5f6f8;
+  --sl-color-black: #ffffff;
+}
+*/
+
+/* ---------------------------------------------------------------------------
+ * 3) SEMANTIC color overrides (optional — usually the ramp above is enough).
+ *    Set these only to fine-tune specific surfaces.
+ * ------------------------------------------------------------------------- */
+/*
+:root {
+  --sl-color-bg: var(--sl-color-black);          (page background)
+  --sl-color-bg-nav: var(--sl-color-gray-6);     (top nav background)
+  --sl-color-bg-sidebar: var(--sl-color-bg);     (left sidebar background)
+  --sl-color-text: var(--sl-color-gray-2);       (body text)
+  --sl-color-text-accent: var(--sl-color-accent-high);
+  --sl-color-hairline: var(--sl-color-gray-6);   (border lines)
+}
+*/
+
+/* ---------------------------------------------------------------------------
+ * 4) TYPOGRAPHY — font sizes & line height. (Font FAMILIES are in custom.css.)
+ * ------------------------------------------------------------------------- */
+/*
+:root {
+  --sl-text-base: 1rem;        (body)
+  --sl-text-code: 0.9em;       (inline & block code)
+  --sl-line-height: 1.75;
+  --sl-line-height-headings: 1.2;
+}
+*/
+
+/* ---------------------------------------------------------------------------
+ * 5) LAYOUT — content width, sidebar width, nav height.
+ * ------------------------------------------------------------------------- */
+/*
+:root {
+  --sl-content-width: 50rem;   (max width of the article column)
+  --sl-sidebar-width: 18.75rem;
+  --sl-nav-height: 3.75rem;
+}
+*/
+
+/* ---------------------------------------------------------------------------
+ * 6) FREE-FORM CSS — anything else. Target Starlight's classes/data-attrs.
+ *    Example: tighten the on-this-page heading.
+ * ------------------------------------------------------------------------- */
+/*
+.sl-markdown-content h2 {
+  margin-top: 2.5rem;
+}
+*/
+
+:root {
+  /* --sl-color-bg-inline-code: rgba(36, 38, 47, 0.85); */
+  --sl-color-blue: hsl(var(--sl-hue-blue), 100%, 60%);
+  --sl-color-blue-high: var(--sl-color-blue); /* hsl(var(--sl-hue-blue), 100%, 87%); */
+  /* --sl-color-accent: hsl(224, 100%, 60%); */
+  --sl-color-accent: rgb(255, 201, 51);
+  --sl-color-accent-high: var(--sl-color-accent);
+  --oy-code-background: rgba(241, 241, 241, 0.5); /* --code-background */
+  /* Header search box background — lower the % for MORE transparency. */
+  --oy-search-bg: color-mix(in oklab, var(--sl-color-black) 40%, transparent);
+}
+:root[data-theme='dark'] {
+  --sl-color-bg-inline-code: rgba(36, 38, 47, 0.85); /* --sl-color-bg-sidebar: hsl(224, 14%, 16%); */
+  --sl-color-bg-sidebar: rgba(36, 38, 47, 0.35);
+  --oy-code-background: rgba(36, 38, 47, 0.5); /* --code-background */
+  --sl-color-purple: hsl(281, 39%, 60%);
+  --sl-color-purple-high: hsl(281, 39%, 87%);
+  --sl-color-purple-low: rgb(64, 34, 78);
+  --sl-color-asides-text-accent: var(--sl-color-purple-high);
+  --sl-color-asides-border: var(--sl-color-purple);
+
+  --sl-color-blue-high: hsl(224, 100%, 87%);
+  --sl-color-asides-text-accent: hsl(234, 100%, 60%);
+
+  --sl-color-orange-low: hsl(41, 45%, 31%);
+}
+
+.sl-markdown-content
+		:not(h1, h2, h3, h4, h5, h6, .sl-heading-wrapper)
+		+ :is(.sl-heading-wrapper) {
+    margin-top: 1em;
+}
+
+.sl-container > h1 {
+  font-size: 2.2rem;
+}
+.sl-heading-wrapper > h2 {
+  font-size: 1.5rem;
+}
+.expressive-code .frame.not-content {
+  border-radius: 7px;
+}
+.expressive-code .frame.not-content pre {
+  background-color: var(--oy-code-background);
+}
+.expressive-code .frame:not(.is-terminal) pre {
+  border-radius: 7px;
+  background-color: var(--oy-code-background);
+}
+.expressive-code .frame.is-terminal .header {
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+.expressive-code .frame.is-terminal pre {
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+.expressive-code .copy button {
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 4px;
+}
+.expressive-code .copy button::after {
+    /* background-color: red; */
+    margin: 0.4rem;
+}
+.sl-markdown-content code:not(:where(.not-content *)) {
+    /* background-color: var(--sl-color-bg-inline-code); */
+    margin: 0 0.12rem;
+    border-radius: 4px;
+}
+.sl-anchor-link {
+  font-size: 1.7rem;
+  padding-left: 12px;
+}
+.starlight-aside {
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+/* Header search box translucency — value lives in --oy-search-bg (above). */
+@media (min-width: 50rem) {
+  .header button[data-open-modal] {
+    background-color: var(--oy-search-bg);
+  }
+}

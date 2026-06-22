@@ -1,0 +1,20 @@
+{
+  "name": "__PROJECT__-website",
+  "private": true,
+  "type": "module",
+  "description": "Documentation site for __TITLE__ (Astro + Starlight via @onury/docs-kit). Not published.",
+  "scripts": {
+    "sync": "node scripts/sync-docs.mjs",
+    "dev": "npm run sync && astro dev",
+    "dev:host": "npm run sync && astro dev --host",
+    "build": "npm run sync && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@onury/docs-kit": "__KIT_REF__",
+    "astro": "^6.4.7"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

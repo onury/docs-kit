@@ -1,0 +1,10 @@
+# build output & deps
+dist/
+node_modules/
+.astro/
+
+# the library root may ignore lockfiles; the docs site needs its own for `npm ci`
+!package-lock.json
+
+# generated content (created at build time by scripts/sync-docs.mjs)
+src/content/docs/api/
