@@ -3,12 +3,12 @@
 Shared **Astro + Starlight** documentation theme and tooling for `@onury`
 projects. One source of truth for the look (fonts, colors, header, code blocks,
 feature cards), the markdown-sync engine, the scaffolder, and the GitHub Pages
-deploy. Each project's `website/` is a thin, generated shell.
+deploy. Each project's `site/` is a thin, generated shell.
 
 Consumed as a **git dependency** (no npm publish):
 
 ```jsonc
-// <project>/website/package.json
+// <project>/site/package.json
 "dependencies": {
   "@onury/docs-kit": "github:onury/docs-kit#v1",
   "astro": "^6.4.7"
@@ -23,8 +23,8 @@ the kit and hoisted into the project — you don't list them per project.
 | Export | Purpose |
 | --- | --- |
 | `@onury/docs-kit/styles/custom.css`, `…/theme.css` | The shared visual theme — referenced as `customCss` string paths in the project's `astro.config.mjs`. |
-| `@onury/docs-kit/sync` → `syncDocs(opts)` | Pulls root markdown (CHANGELOG, `docs/*.md`) into the Starlight content collection at build time. |
-| `bin/init.mjs` (`docs-kit init`) | Scaffolds a project's `website/` + a self-contained Pages workflow (`.github/workflows/docs.yml`). |
+| `@onury/docs-kit/sync` → `syncDocs(opts)` | Pulls repo-root markdown (CHANGELOG) into the Starlight content collection at build time. All other pages are authored directly in `site/src/content/docs/`. |
+| `bin/init.mjs` (`docs-kit init`) | Scaffolds a project's `site/` + a self-contained Pages workflow (`.github/workflows/docs.yml`). |
 
 The **hero** background and the **home page** are intentionally per-project (each
 project owns `src/styles/hero.css` + `src/content/docs/index.mdx`); the shared
@@ -69,16 +69,16 @@ node ../docs-kit/bin/init.mjs --local --base /myproject --title MyProject
 npx @onury/docs-kit init --base /myproject
 ```
 
-It reads the project's `package.json`, discovers `CHANGELOG.md` + `docs/*.md`,
+It reads the project's `package.json`, picks up `CHANGELOG.md` (synced),
 detects whether there's a public TS API (`src/index.ts` + `tsconfig.build.json`)
-to document, and writes `website/` (including a `website/README.md` that explains
+to document, and writes `site/` (including a `site/README.md` that explains
 how to customize that site) plus `.github/workflows/docs.yml`. Then:
 
 ```bash
 # --local installs use --install-links (see "Local development" below)
-npm --prefix website install --install-links
-npm --prefix website run dev      # preview
-npm --prefix website run build    # → website/dist
+npm --prefix site install --install-links
+npm --prefix site run dev      # preview
+npm --prefix site run build    # → site/dist
 ```
 
 `--base` **must** match the GitHub repo name (the Pages project path): a repo
@@ -139,7 +139,7 @@ it. Use `--install-links`, which packs the kit like a real tarball and hoists it
 deps into the project — exactly how the git dependency behaves in CI:
 
 ```bash
-npm --prefix website install --install-links
+npm --prefix site install --install-links
 ```
 
 Re-run it after changing kit JS/CSS. (For the published git dep, plain
@@ -151,7 +151,7 @@ Re-run it after changing kit JS/CSS. (For the published git dep, plain
 # in this repo, after committing changes
 git tag -f v1 && git push -f origin v1     # move v1, or cut v2 for breaking changes
 # in each consuming project
-npm --prefix website update @onury/docs-kit
+npm --prefix site update @onury/docs-kit
 ```
 
 Projects pin `#v1`; moving the tag + `npm update` rolls the theme forward. Cut a

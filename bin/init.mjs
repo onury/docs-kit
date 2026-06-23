@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Scaffolds a `website/` docs site (Astro + Starlight, themed by @onury/docs-kit)
+// Scaffolds a `site/` docs site (Astro + Starlight, themed by @onury/docs-kit)
 // into a project, plus a thin Pages-deploy workflow. Run from the project root:
 //
 //   node ../docs-kit/bin/init.mjs --local       # local dev (file: dep)
@@ -12,7 +12,7 @@
 //   --branch name    Branch the deploy workflow triggers on (default: current git branch)
 //   --ref spec       Kit dependency spec (default: github:onury/docs-kit#v1)
 //   --local          Use a local file: dep (file:../../docs-kit) for development
-//   --force          Overwrite an existing website/ directory
+//   --force          Overwrite an existing site/ directory
 //
 // NOTE: the generated astro.config.mjs intentionally does NOT import from
 // @onury/docs-kit — the shared theme is pulled in via CSS string paths. Importing
@@ -23,7 +23,6 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
-  readdirSync,
   writeFileSync
 } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
@@ -109,7 +108,10 @@ const defaultBranch = detectBranch();
 const hasApi =
   existsSync(join(projectRoot, 'src/index.ts')) && existsSync(join(projectRoot, 'tsconfig.build.json'));
 
-// --- discover docs to sync ---------------------------------------------------
+// --- sync from repo root -----------------------------------------------------
+// Only CHANGELOG.md is synced from the repo root; all other pages are authored
+// directly in site/src/content/docs/ (read by Starlight, no sync). See the
+// project's site/README.md.
 const files = [];
 const helpItems = [];
 if (existsSync(join(projectRoot, 'CHANGELOG.md'))) {
@@ -120,16 +122,6 @@ if (existsSync(join(projectRoot, 'CHANGELOG.md'))) {
     description: 'Release history — notable changes across versions.'
   });
   helpItems.push({ label: 'Changelog', slug: 'changelog' });
-}
-const docsDir = join(projectRoot, 'docs');
-if (existsSync(docsDir)) {
-  for (const f of readdirSync(docsDir).sort()) {
-    if (!/\.md$/i.test(f) || /^readme\.md$/i.test(f)) continue;
-    const out = f.toLowerCase();
-    const slug = out.replace(/\.md$/, '');
-    files.push({ src: `docs/${f}`, out, description: `${titleCase(slug)}.` });
-    helpItems.push({ label: titleCase(slug), slug });
-  }
 }
 
 const sidebar = [
@@ -239,9 +231,9 @@ function renderAstroConfig() {
 }
 
 // --- write -------------------------------------------------------------------
-const websiteDir = join(projectRoot, 'website');
-if (existsSync(websiteDir) && !args.force) {
-  fail(`website/ already exists in ${projectRoot} (use --force to overwrite).`);
+const siteDir = join(projectRoot, 'site');
+if (existsSync(siteDir) && !args.force) {
+  fail(`site/ already exists in ${projectRoot} (use --force to overwrite).`);
 }
 
 const written = [];
@@ -259,22 +251,22 @@ function fillTpl(tplRel, destRel) {
 }
 
 // generated / token-filled
-writeOut('website/astro.config.mjs', renderAstroConfig());
-fillTpl('website-README.md', 'website/README.md');
-fillTpl('package.json', 'website/package.json');
-fillTpl('scripts/sync-docs.mjs', 'website/scripts/sync-docs.mjs');
-fillTpl('src/content/docs/index.mdx', 'website/src/content/docs/index.mdx');
-fillTpl('src/content/docs/getting-started.md', 'website/src/content/docs/getting-started.md');
+writeOut('site/astro.config.mjs', renderAstroConfig());
+fillTpl('site-README.md', 'site/README.md');
+fillTpl('package.json', 'site/package.json');
+fillTpl('scripts/sync-docs.mjs', 'site/scripts/sync-docs.mjs');
+fillTpl('src/content/docs/index.mdx', 'site/src/content/docs/index.mdx');
+fillTpl('src/content/docs/getting-started.md', 'site/src/content/docs/getting-started.md');
 
 // static copies
-copyTpl('tsconfig.json', 'website/tsconfig.json');
-copyTpl('src/content.config.ts', 'website/src/content.config.ts');
-copyTpl('src/styles/overrides.css', 'website/src/styles/overrides.css');
-copyTpl('src/styles/hero.css', 'website/src/styles/hero.css');
+copyTpl('tsconfig.json', 'site/tsconfig.json');
+copyTpl('src/content.config.ts', 'site/src/content.config.ts');
+copyTpl('src/styles/overrides.css', 'site/src/styles/overrides.css');
+copyTpl('src/styles/hero.css', 'site/src/styles/hero.css');
 for (const c of ['Hero', 'Footer', 'Head', 'SocialIcons']) {
-  copyTpl(`src/components/${c}.astro`, `website/src/components/${c}.astro`);
+  copyTpl(`src/components/${c}.astro`, `site/src/components/${c}.astro`);
 }
-fillTpl('public/favicon.svg', 'website/public/favicon.svg');
+fillTpl('public/favicon.svg', 'site/public/favicon.svg');
 
 // .gitignore (+ generated synced files)
 const ignore =
@@ -285,7 +277,7 @@ const ignore =
       files.map((f) => `src/content/docs/${f.out}`).join('\n') +
       '\n'
     : '');
-writeOut('website/.gitignore', ignore);
+writeOut('site/.gitignore', ignore);
 
 // CI workflow
 fillTpl('workflows/docs.yml', '.github/workflows/docs.yml');
@@ -301,9 +293,9 @@ console.log('  synced:  ', files.length ? files.map((f) => f.src).join(', ') : '
 console.log('\n  files written:');
 for (const w of written) console.log('   ', w);
 console.log(`\n  next:`);
-console.log(`    ${c('npm --prefix website install' + (args.local ? ' --install-links' : ''))}`);
-console.log(`    ${c('npm --prefix website run dev')}     # preview`);
-console.log(`    ${c('npm --prefix website run build')}   # production build → website/dist`);
+console.log(`    ${c('npm --prefix site install' + (args.local ? ' --install-links' : ''))}`);
+console.log(`    ${c('npm --prefix site run dev')}     # preview`);
+console.log(`    ${c('npm --prefix site run build')}   # production build → site/dist`);
 console.log(
   `\n  then enable GitHub Pages (Settings → Pages → Source: GitHub Actions) and push to ${defaultBranch}.\n`
 );

@@ -1,7 +1,8 @@
-// Pulls the project's root markdown (CHANGELOG, docs/*.md…) into the Starlight
-// content collection at build time. The engine lives in @onury/docs-kit; this
-// file just declares WHICH files map to WHICH in-site pages. Add/remove entries
-// freely (and update the sidebar in astro.config.mjs to match).
+// Pulls the project's repo-root CHANGELOG into the Starlight content collection
+// at build time (all other pages are authored directly in src/content/docs/).
+// The engine lives in @onury/docs-kit; this file just declares WHICH root files
+// map to WHICH in-site pages. Add/remove entries freely (and update the sidebar
+// in astro.config.mjs to match).
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { syncDocs } from '@onury/docs-kit/sync';
@@ -9,7 +10,7 @@ import { syncDocs } from '@onury/docs-kit/sync';
 const here = dirname(fileURLToPath(import.meta.url));
 
 syncDocs({
-  root: resolve(here, '../..'),       // project root (one level above website/)
+  root: resolve(here, '../..'),       // project root (one level above site/)
   outDir: resolve(here, '../src/content/docs'),
   base: '__BASE__',
   files: __FILES__

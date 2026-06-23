@@ -1,5 +1,5 @@
 {
-  "name": "__PROJECT__-website",
+  "name": "__PROJECT__-site",
   "private": true,
   "type": "module",
   "description": "Documentation site for __TITLE__ (Astro + Starlight via @onury/docs-kit). Not published.",
