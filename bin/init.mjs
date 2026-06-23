@@ -99,6 +99,7 @@ const base = `/${baseName}`;
 const projectName = pkg.name;
 const title = args.title ? String(args.title) : titleCase(pkg.name);
 const description = pkg.description || `${title} documentation.`;
+const license = typeof pkg.license === 'string' && pkg.license ? pkg.license : 'MIT';
 const kitRef = args.local
   ? 'file:../../docs-kit'
   : args.ref
@@ -148,6 +149,7 @@ function fill(str) {
     .split('__GH_REPO__').join(repo)
     .split('__KIT_REF__').join(kitRef)
     .split('__DEFAULT_BRANCH__').join(defaultBranch)
+    .split('__LICENSE__').join(license)
     .split('__FILES__').join(filesLiteral);
 }
 

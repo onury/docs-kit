@@ -116,3 +116,17 @@ header.header {
     grid-template-columns: 1fr auto auto;
   }
 }
+
+/* ── Home: copyright / license footer ──────────────────────────────── */
+.site-copyright {
+  margin-top: 3.5rem;
+  text-align: center;
+  color: var(--sl-color-gray-3);
+  font-size: 0.875rem;
+}
+.site-copyright a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-copyright a:hover { color: var(--sl-color-text); }
