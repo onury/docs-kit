@@ -222,6 +222,8 @@ function renderAstroConfig() {
     `      title: ${j(title)},\n` +
     `      description: ${j(description)},\n` +
     `      social: [{ icon: 'github', label: 'GitHub', href: ${j(`https://github.com/${repo}`)} }],\n` +
+    "      // Shared <head> (Cloudflare Web Analytics beacon) — token lives in the kit.\n" +
+    "      components: { Head: '@onury/docs-kit/components/Head.astro' },\n" +
     '      customCss: [\n' +
     "        '@onury/docs-kit/styles/custom.css',\n" +
     "        '@onury/docs-kit/styles/theme.css',\n" +

@@ -1,0 +1,28 @@
+---
+/**
+ * Shared <head> additions for @onury docs sites — re-renders Starlight's default
+ * <Head>, then appends the Cloudflare Web Analytics beacon (privacy-friendly,
+ * cookieless). Wire it in via `components: { Head: '@onury/docs-kit/components/Head.astro' }`.
+ *
+ * The token is the SAME for every onury.io docs site (one Web Analytics property
+ * for the whole hostname) — set it once, here. Leave it empty to disable the
+ * beacon (the override then just renders the default <head>, a safe no-op).
+ *
+ * Beacon only loads in production builds, so local `astro dev` doesn't ping it.
+ */
+import Default from '@astrojs/starlight/components/Head.astro';
+
+const CF_BEACON_TOKEN = ''; // ← paste the onury.io Cloudflare Web Analytics token
+---
+
+<Default><slot /></Default>
+
+{
+  import.meta.env.PROD && CF_BEACON_TOKEN && (
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token: CF_BEACON_TOKEN })}
+    />
+  )
+}

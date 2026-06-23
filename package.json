@@ -12,7 +12,8 @@
   "exports": {
     "./sync": "./sync.mjs",
     "./styles/custom.css": "./styles/custom.css",
-    "./styles/theme.css": "./styles/theme.css"
+    "./styles/theme.css": "./styles/theme.css",
+    "./components/Head.astro": "./components/Head.astro"
   },
   "bin": {
     "docs-kit": "./bin/init.mjs"
@@ -20,6 +21,7 @@
   "files": [
     "sync.mjs",
     "styles",
+    "components",
     "bin",
     "templates"
   ],
