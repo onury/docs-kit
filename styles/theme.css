@@ -110,9 +110,12 @@
   /* --sl-color-bg-inline-code: rgba(36, 38, 47, 0.85); */
   --sl-color-blue: hsl(var(--sl-hue-blue), 100%, 60%);
   --sl-color-blue-high: var(--sl-color-blue); /* hsl(var(--sl-hue-blue), 100%, 87%); */
+  /* Accent — per-project overridable. Set `--oy-accent` in the project's own
+     `src/styles/overrides.css` (loaded after this file) to recolor a single
+     docs site without touching the shared theme. Defaults to the brand yellow. */
   /* --sl-color-accent: hsl(224, 100%, 60%); */
-  --sl-color-accent: rgb(255, 201, 51);
-  --sl-color-accent-high: var(--sl-color-accent);
+  --sl-color-accent: var(--oy-accent, rgb(255, 201, 51));
+  --sl-color-accent-high: var(--oy-accent-high, var(--sl-color-accent));
   --oy-code-background: rgba(241, 241, 241, 0.5); /* --code-background */
   /* Header search box background — lower the % for MORE transparency. */
   --oy-search-bg: color-mix(in oklab, var(--sl-color-black) 40%, transparent);

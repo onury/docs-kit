@@ -223,6 +223,7 @@ function renderAstroConfig() {
     '      customCss: [\n' +
     "        '@onury/docs-kit/styles/custom.css',\n" +
     "        '@onury/docs-kit/styles/theme.css',\n" +
+    "        './src/styles/overrides.css',\n" +
     "        './src/styles/hero.css'\n" +
     '      ],\n' +
     pluginsBlock +
@@ -263,6 +264,7 @@ fillTpl('src/content/docs/getting-started.md', 'website/src/content/docs/getting
 // static copies
 copyTpl('tsconfig.json', 'website/tsconfig.json');
 copyTpl('src/content.config.ts', 'website/src/content.config.ts');
+copyTpl('src/styles/overrides.css', 'website/src/styles/overrides.css');
 copyTpl('src/styles/hero.css', 'website/src/styles/hero.css');
 for (const c of ['Hero', 'Footer', 'Head', 'SocialIcons']) {
   copyTpl(`src/components/${c}.astro`, `website/src/components/${c}.astro`);
