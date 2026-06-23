@@ -11,6 +11,7 @@
 :root {
   /* --oy-accent: #3b82f6; */            /* main accent (links, primary button, active nav) */
   /* --oy-accent-high: var(--oy-accent); */ /* high-contrast accent (defaults to --oy-accent) */
+  /* --oy-hero-align: start; */          /* home hero alignment: center (default) or start (left) */
 }
 
 /* Need finer control? Override any Starlight token here too, e.g.:

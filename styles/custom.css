@@ -82,6 +82,28 @@ header.header {
 .fi-red    { color: #ef4444; }
 .fi-yellow { color: #eab308; }
 
+/* ── Home hero: single-column stack, alignment knob + logo spacing ──────
+ * Stacks the hero into one column (logo on top, then tagline + actions) and
+ * aligns its contents. Flip alignment per-site in `overrides.css`:
+ *     :root { --oy-hero-align: start; }   ← left   (default: center)
+ * `justify-items` / `text-align` / `justify-content` all accept `start|center`,
+ * so a single token drives every axis. Starlight scopes its hero rules with
+ * `:where()` (zero specificity); the `body` prefix wins deterministically. */
+body .hero {
+  grid-template-columns: 100%;
+  justify-items: var(--oy-hero-align, center);
+}
+body .hero .stack   { text-align: var(--oy-hero-align, center); }
+body .hero .copy    { align-items: var(--oy-hero-align, center); }
+body .hero .actions { justify-content: var(--oy-hero-align, center); }
+/* Keep the logo above the copy (Starlight sends an image to the side at ≥50rem). */
+body .hero > .hero-html,
+body .hero > img { order: 0; }
+/* Breathing room under the logo. Scoped to real logo images, so a full-bleed
+ * decorative `.hero-html` background (e.g. AccessControl's tape) is untouched. */
+body .hero > img,
+body .hero .hero-html img.hero-logo { margin-bottom: 1.5rem; }
+
 /* ── Home: "projects we support" strip ─────────────────────────────── */
 .tech-strip-wrap { margin: 3.5rem 0 1rem; text-align: center; }
 .tech-strip-label { color: var(--sl-color-gray-3); font-size: 0.95rem; margin-bottom: 1.25rem; }
