@@ -92,6 +92,9 @@ header.header {
 body .hero {
   grid-template-columns: 100%;
   justify-items: var(--oy-hero-align, center);
+  /* Trim Starlight's tall default hero padding (up to 10rem top+bottom).
+   * Tunable per-site via --oy-hero-pad in overrides.css. */
+  padding-block: var(--oy-hero-pad, clamp(1.5rem, 1rem + 4vmin, 4rem));
 }
 body .hero .stack   { text-align: var(--oy-hero-align, center); }
 body .hero .copy    { align-items: var(--oy-hero-align, center); }
