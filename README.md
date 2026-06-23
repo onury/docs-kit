@@ -71,7 +71,8 @@ npx @onury/docs-kit init --base /myproject
 
 It reads the project's `package.json`, discovers `CHANGELOG.md` + `docs/*.md`,
 detects whether there's a public TS API (`src/index.ts` + `tsconfig.build.json`)
-to document, and writes `website/` plus `.github/workflows/docs.yml`. Then:
+to document, and writes `website/` (including a `website/README.md` that explains
+how to customize that site) plus `.github/workflows/docs.yml`. Then:
 
 ```bash
 # --local installs use --install-links (see "Local development" below)
@@ -105,7 +106,8 @@ export default defineConfig({
       customCss: [
         '@onury/docs-kit/styles/custom.css',   // shared theme
         '@onury/docs-kit/styles/theme.css',    // shared theme
-        './src/styles/hero.css'                // project-owned
+        './src/styles/overrides.css',          // per-project tokens (accent…)
+        './src/styles/hero.css'                // project-owned hero
       ],
       plugins: [ starlightTypeDoc({ entryPoints: ['../src/index.ts'], /* … */ }) ],
       sidebar: [ /* … */, typeDocSidebarGroup ]

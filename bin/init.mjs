@@ -256,6 +256,7 @@ function fillTpl(tplRel, destRel) {
 
 // generated / token-filled
 writeOut('website/astro.config.mjs', renderAstroConfig());
+fillTpl('website-README.md', 'website/README.md');
 fillTpl('package.json', 'website/package.json');
 fillTpl('scripts/sync-docs.mjs', 'website/scripts/sync-docs.mjs');
 fillTpl('src/content/docs/index.mdx', 'website/src/content/docs/index.mdx');
