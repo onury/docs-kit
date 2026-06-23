@@ -193,7 +193,7 @@ function renderAstroConfig() {
       "          entryPoints: ['../src/index.ts'],\n" +
       "          tsconfig: '../tsconfig.build.json',\n" +
       "          output: 'api',\n" +
-      "          sidebar: { label: 'API Reference', collapsed: true },\n" +
+      "          sidebar: { label: 'API Reference', collapsed: false },\n" +
       "          typeDoc: { githubPages: false, excludeInternal: true, sort: ['source-order'] }\n" +
       '        })\n' +
       '      ],\n'
