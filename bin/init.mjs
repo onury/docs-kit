@@ -274,7 +274,7 @@ copyTpl('src/styles/hero.css', 'website/src/styles/hero.css');
 for (const c of ['Hero', 'Footer', 'Head', 'SocialIcons']) {
   copyTpl(`src/components/${c}.astro`, `website/src/components/${c}.astro`);
 }
-copyTpl('public/favicon.svg', 'website/public/favicon.svg');
+fillTpl('public/favicon.svg', 'website/public/favicon.svg');
 
 // .gitignore (+ generated synced files)
 const ignore =
