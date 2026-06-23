@@ -250,6 +250,67 @@ function fillTpl(tplRel, destRel) {
   writeOut(destRel, fill(readFileSync(join(TPL, tplRel), 'utf8')));
 }
 
+// Manage the host's root package.json docs scripts (docs / docs:dev / docs:host
+// → the site dir). Adds them when missing; normalizes a stale docs-kit
+// delegation (e.g. an old `--prefix website` left after the website→site
+// rename); never overwrites a FOREIGN script (e.g. a TypeDoc `docs`). Edits the
+// text in place so the file's existing formatting and key order are preserved.
+function ensureDocsScripts() {
+  const managed = {
+    docs: 'npm --prefix site run build',
+    'docs:dev': 'npm --prefix site run dev',
+    'docs:host': 'npm --prefix site run dev:host'
+  };
+  const isDelegation = (v) => typeof v === 'string' && /^npm --prefix \S+ run \S/.test(v);
+  const scripts = pkg.scripts || {};
+  const added = [];
+  const normalized = [];
+  const skipped = [];
+  const overwrite = {};
+  const append = {};
+  for (const [k, v] of Object.entries(managed)) {
+    if (!(k in scripts)) {
+      append[k] = v;
+      added.push(k);
+    } else if (scripts[k] === v) {
+      continue; // already correct
+    } else if (isDelegation(scripts[k])) {
+      overwrite[k] = v; // stale docs-kit delegation → normalize
+      normalized.push(k);
+    } else {
+      skipped.push(k); // foreign script → leave it alone
+    }
+  }
+  if (!added.length && !normalized.length) return { added, normalized, skipped };
+
+  let raw = readFileSync(pkgPath, 'utf8');
+
+  // Overwrite stale delegations in place (keep their position + indent).
+  for (const [k, v] of Object.entries(overwrite)) {
+    const keyEsc = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`(\\n[ \\t]*"${keyEsc}"\\s*:\\s*)"(?:[^"\\\\]|\\\\.)*"`);
+    raw = raw.replace(re, `$1${JSON.stringify(v)}`);
+  }
+
+  // Append new keys at the end of the "scripts" object.
+  const newKeys = Object.entries(append);
+  if (newKeys.length) {
+    raw = raw.replace(/("scripts"\s*:\s*\{)([\s\S]*?)(\n[ \t]*\})/, (_m, open, inner, close) => {
+      const body = inner.replace(/\s*$/, '');
+      // Indent of an existing script entry (fallback to 4 spaces for empty scripts).
+      const entryIndent = inner.match(/\n([ \t]+)"/)?.[1] || '    ';
+      const lines = newKeys
+        .map(([k, v]) => `${entryIndent}${JSON.stringify(k)}: ${JSON.stringify(v)}`)
+        .join(',\n');
+      const joined = body === '' ? `\n${lines}` : `${body},\n${lines}`;
+      return `${open}${joined}${close}`;
+    });
+  }
+
+  writeFileSync(pkgPath, raw);
+  return { added, normalized, skipped };
+}
+
 // generated / token-filled
 writeOut('site/astro.config.mjs', renderAstroConfig());
 fillTpl('site-README.md', 'site/README.md');
@@ -282,6 +343,9 @@ writeOut('site/.gitignore', ignore);
 // CI workflow
 fillTpl('workflows/docs.yml', '.github/workflows/docs.yml');
 
+// root package.json: docs convenience scripts (docs / docs:dev / docs:host)
+const docsScripts = ensureDocsScripts();
+
 // --- report ------------------------------------------------------------------
 const c = (s) => `\x1b[36m${s}\x1b[0m`;
 console.log(`\n\x1b[32m✓ docs-kit scaffolded ${title} → ${base}\x1b[0m\n`);
@@ -292,6 +356,17 @@ console.log('  branch:  ', defaultBranch, '(deploy trigger)');
 console.log('  synced:  ', files.length ? files.map((f) => f.src).join(', ') : '(none found)');
 console.log('\n  files written:');
 for (const w of written) console.log('   ', w);
+if (docsScripts.added.length || docsScripts.normalized.length) {
+  const parts = [];
+  if (docsScripts.added.length) parts.push(`added ${docsScripts.added.join(', ')}`);
+  if (docsScripts.normalized.length) parts.push(`normalized ${docsScripts.normalized.join(', ')}`);
+  console.log(`\n  root scripts (package.json): ${parts.join('; ')} → site`);
+}
+if (docsScripts.skipped.length) {
+  console.log(
+    `  note: left existing non-docs-kit script(s) untouched: ${docsScripts.skipped.join(', ')}`
+  );
+}
 console.log(`\n  next:`);
 console.log(`    ${c('npm --prefix site install' + (args.local ? ' --install-links' : ''))}`);
 console.log(`    ${c('npm --prefix site run dev')}     # preview`);
