@@ -223,9 +223,14 @@ starlight-theme-select select:focus {
   outline: none;
 }
 
-/* Search results: primary titles in the brand accent — blended 58% toward the
- * body-text color so they stay readable on light & dark. This recolors only this
- * TEXT; buttons/backgrounds keep the full --sl-color-accent. */
+/* Accent TEXT — content links, the active "On this page" (TOC) item, and search
+ * result titles — blended 35% toward the body-text color so it stays readable on
+ * light & dark while keeping a brand tint. This recolors only TEXT: buttons, the
+ * active sidebar item and other accent BACKGROUNDS keep the full
+ * --sl-color-accent (Starlight reuses --sl-color-text-accent for those, so we
+ * deliberately don't touch the variable — we override `color` per-element). */
+.sl-markdown-content a:not(:where(.not-content *)),
+a[aria-current='true'],
 .pagefind-ui__result-title .pagefind-ui__result-link {
-  color: color-mix(in oklab, var(--sl-color-accent) 58%, var(--sl-color-text));
+  color: color-mix(in oklab, var(--sl-color-accent) 35%, var(--sl-color-text));
 }
