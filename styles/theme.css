@@ -115,10 +115,22 @@
      docs site without touching the shared theme. Defaults to the brand yellow. */
   /* --sl-color-accent: hsl(224, 100%, 60%); */
   --sl-color-accent: var(--oy-accent, rgb(255, 201, 51));
-  --sl-color-accent-high: var(--oy-accent-high, var(--sl-color-accent));
+  /* Derive the REST of the accent ramp from --oy-accent so focus rings,
+     selection and accent text all follow the brand automatically (no leftover
+     blue defaults). These are the DARK-theme values; light overrides are in the
+     [data-theme='light'] block below. `--sl-color-accent-high` (a.k.a.
+     --sl-color-text-accent) is the contrast-safe variant used for accent TEXT. */
+  --sl-color-accent-low: color-mix(in oklab, var(--sl-color-accent) 30%, #0c0d11);
+  --sl-color-accent-high: var(--oy-accent-high, color-mix(in oklab, var(--sl-color-accent) 72%, #fff));
   --oy-code-background: rgba(241, 241, 241, 0.5); /* --code-background */
   /* Header search box background — lower the % for MORE transparency. */
   --oy-search-bg: color-mix(in oklab, var(--sl-color-black) 40%, transparent);
+}
+:root[data-theme='light'] {
+  /* Light theme: a pale accent for subtle surfaces, and a DARK accent for text
+     so accent-colored text stays readable on a light background. */
+  --sl-color-accent-low: color-mix(in oklab, var(--sl-color-accent) 16%, #fff);
+  --sl-color-accent-high: var(--oy-accent-high, color-mix(in oklab, var(--sl-color-accent) 70%, #1a1a1a));
 }
 :root[data-theme='dark'] {
   --sl-color-bg-inline-code: rgba(36, 38, 47, 0.85); /* --sl-color-bg-sidebar: hsl(224, 14%, 16%); */
@@ -194,4 +206,21 @@
   .header button[data-open-modal] {
     background-color: var(--oy-search-bg);
   }
+}
+
+/* ── Focus rings follow the brand accent (never the browser's default blue) ───
+ * Low-specificity (`:where`) so Starlight's own focus styles still win where it
+ * sets them; this catches the controls it doesn't (the theme picker <select>,
+ * the Pagefind search <input>). Auto-themed via --oy-accent. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--sl-color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Search results: primary titles in the brand accent — using the contrast-safe
+ * accent variant (--sl-color-text-accent = accent-high), so it stays readable on
+ * both light and dark backgrounds. Nested/excerpt text keeps the body color. */
+.pagefind-ui__result-title .pagefind-ui__result-link {
+  color: var(--sl-color-text-accent);
 }
