@@ -121,22 +121,17 @@
      [data-theme='light'] block below. `--sl-color-accent-high` (a.k.a.
      --sl-color-text-accent) is the contrast-safe variant used for accent TEXT. */
   --sl-color-accent-low: color-mix(in oklab, var(--sl-color-accent) 30%, #0c0d11);
-  --sl-color-accent-high: var(--oy-accent-high, color-mix(in oklab, var(--sl-color-accent) 72%, #fff));
-  /* Accent TEXT ONLY (links, accent headings, search titles) — blend the accent
-     toward the body-text color so it stays readable on either background
-     (darkens on light, lightens on dark) while keeping the brand hue. This does
-     NOT affect buttons or other accent surfaces, which keep --sl-color-accent.
-     Tune the % for more brand (higher) vs. more contrast (lower). */
-  --sl-color-text-accent: color-mix(in oklab, var(--sl-color-accent) 65%, var(--sl-color-text));
+  /* Keep accent-high (= --sl-color-text-accent) the FULL brand accent. Starlight
+     reuses it as a BACKGROUND (primary button, active sidebar item), so it must
+     stay bright. Readable accent TEXT is handled per-element below, not here. */
+  --sl-color-accent-high: var(--oy-accent-high, var(--sl-color-accent));
   --oy-code-background: rgba(241, 241, 241, 0.5); /* --code-background */
   /* Header search box background — lower the % for MORE transparency. */
   --oy-search-bg: color-mix(in oklab, var(--sl-color-black) 40%, transparent);
 }
 :root[data-theme='light'] {
-  /* Light theme: pale accent for subtle surfaces; darker accent-high shade.
-     (Accent TEXT is handled theme-agnostically in base :root.) */
+  /* Light theme: a pale accent for subtle surfaces. */
   --sl-color-accent-low: color-mix(in oklab, var(--sl-color-accent) 16%, #fff);
-  --sl-color-accent-high: var(--oy-accent-high, color-mix(in oklab, var(--sl-color-accent) 70%, #1a1a1a));
 }
 :root[data-theme='dark'] {
   --sl-color-bg-inline-code: rgba(36, 38, 47, 0.85); /* --sl-color-bg-sidebar: hsl(224, 14%, 16%); */
@@ -228,9 +223,9 @@ starlight-theme-select select:focus {
   outline: none;
 }
 
-/* Search results: primary titles in the brand accent — using the contrast-safe
- * accent variant (--sl-color-text-accent = accent-high), so it stays readable on
- * both light and dark backgrounds. Nested/excerpt text keeps the body color. */
+/* Search results: primary titles in the brand accent — blended 58% toward the
+ * body-text color so they stay readable on light & dark. This recolors only this
+ * TEXT; buttons/backgrounds keep the full --sl-color-accent. */
 .pagefind-ui__result-title .pagefind-ui__result-link {
-  color: var(--sl-color-text-accent);
+  color: color-mix(in oklab, var(--sl-color-accent) 58%, var(--sl-color-text));
 }
