@@ -140,7 +140,7 @@
   /* Accent TEXT: darken toward black (keeps the hue/chroma — a gold, not gray)
      so it's readable on white while the color is still clearly visible. Lower
      the % to darken more (more contrast); raise it for more vividness. */
-  --oy-text-accent: color-mix(in oklab, var(--sl-color-accent) 70%, #000);
+  --oy-text-accent: color-mix(in oklab, var(--sl-color-accent) 78%, #000);
 }
 :root[data-theme='dark'] {
   --sl-color-bg-inline-code: rgba(36, 38, 47, 0.85); /* --sl-color-bg-sidebar: hsl(224, 14%, 16%); */
