@@ -121,18 +121,22 @@
      [data-theme='light'] block below. `--sl-color-accent-high` (a.k.a.
      --sl-color-text-accent) is the contrast-safe variant used for accent TEXT. */
   --sl-color-accent-low: color-mix(in oklab, var(--sl-color-accent) 30%, #0c0d11);
-  /* Accent TEXT: blend the accent toward the body-text color so it lands near a
-     readable luminance on either background (darkens on light, lightens on dark),
-     while keeping the brand hue. Tune the % for more brand vs. more contrast. */
-  --sl-color-accent-high: var(--oy-accent-high, color-mix(in oklab, var(--sl-color-accent) 58%, var(--sl-color-text)));
+  --sl-color-accent-high: var(--oy-accent-high, color-mix(in oklab, var(--sl-color-accent) 72%, #fff));
+  /* Accent TEXT ONLY (links, accent headings, search titles) — blend the accent
+     toward the body-text color so it stays readable on either background
+     (darkens on light, lightens on dark) while keeping the brand hue. This does
+     NOT affect buttons or other accent surfaces, which keep --sl-color-accent.
+     Tune the % for more brand (higher) vs. more contrast (lower). */
+  --sl-color-text-accent: color-mix(in oklab, var(--sl-color-accent) 65%, var(--sl-color-text));
   --oy-code-background: rgba(241, 241, 241, 0.5); /* --code-background */
   /* Header search box background — lower the % for MORE transparency. */
   --oy-search-bg: color-mix(in oklab, var(--sl-color-black) 40%, transparent);
 }
 :root[data-theme='light'] {
-  /* Light theme: a pale accent for subtle surfaces. (Accent TEXT is handled
-     theme-agnostically in the base :root, blended toward --sl-color-text.) */
+  /* Light theme: pale accent for subtle surfaces; darker accent-high shade.
+     (Accent TEXT is handled theme-agnostically in base :root.) */
   --sl-color-accent-low: color-mix(in oklab, var(--sl-color-accent) 16%, #fff);
+  --sl-color-accent-high: var(--oy-accent-high, color-mix(in oklab, var(--sl-color-accent) 70%, #1a1a1a));
 }
 :root[data-theme='dark'] {
   --sl-color-bg-inline-code: rgba(36, 38, 47, 0.85); /* --sl-color-bg-sidebar: hsl(224, 14%, 16%); */
