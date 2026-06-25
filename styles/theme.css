@@ -170,6 +170,16 @@
 .sl-heading-wrapper > h2 {
   font-size: 1.5rem;
 }
+/* h1/h2 are pinned flat (above); pin h3/h4 to a flat descending ladder UNDER h2.
+   Otherwise Starlight's responsive `--sl-text-h3` grows to 1.8125rem on wide
+   screens — LARGER than the 1.5rem h2 — inverting the hierarchy wherever an h3
+   sits under an h2 (changelogs, API references, FAQs, …). */
+.sl-heading-wrapper > h3 {
+  font-size: 1.3rem;
+}
+.sl-heading-wrapper > h4 {
+  font-size: 1.15rem;
+}
 .expressive-code .frame.not-content {
   border-radius: 7px;
 }
