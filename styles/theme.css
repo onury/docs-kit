@@ -221,6 +221,20 @@
   border-bottom-right-radius: 7px;
 }
 
+/* ── Aside titles keep inline flow ────────────────────────────────────────────
+ * Starlight lays the aside title out with flex (assuming icon + one text node).
+ * A title with inline markup (`code`, *em*) splits into several flex items,
+ * which then wrap as independent blocks with gaps — a fragmented headline.
+ * Let the title flow as text; keep the icon sitting on the baseline. */
+.starlight-aside__title {
+  display: block;
+}
+.starlight-aside__title .starlight-aside__icon {
+  display: inline-block;
+  vertical-align: -0.1875em;
+  margin-inline-end: 0.5rem;
+}
+
 /* Header search box translucency — value lives in --oy-search-bg (above). */
 @media (min-width: 50rem) {
   .header button[data-open-modal] {
