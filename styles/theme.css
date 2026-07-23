@@ -158,6 +158,22 @@
   --sl-color-orange-low: hsl(41, 45%, 31%);
 }
 
+/* Callout (aside) backgrounds — knock 20% off the opacity so the page shows
+   through and they read less heavy. Starlight sets each variant's background to
+   `--sl-color-<variant>-low`; re-mix that with 20% transparent. */
+.starlight-aside--note {
+  background-color: color-mix(in oklab, var(--sl-color-blue-low) 80%, transparent);
+}
+.starlight-aside--tip {
+  background-color: color-mix(in oklab, var(--sl-color-purple-low) 80%, transparent);
+}
+.starlight-aside--caution {
+  background-color: color-mix(in oklab, var(--sl-color-orange-low) 80%, transparent);
+}
+.starlight-aside--danger {
+  background-color: color-mix(in oklab, var(--sl-color-red-low) 80%, transparent);
+}
+
 .sl-markdown-content
 		:not(h1, h2, h3, h4, h5, h6, .sl-heading-wrapper)
 		+ :is(.sl-heading-wrapper) {
