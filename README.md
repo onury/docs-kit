@@ -21,6 +21,11 @@ the kit and hoisted into the project — you don't list them per project.
 > **v2 targets Astro 7 + Starlight 0.41 and requires Node ≥ 22.12.** Sites still
 > pinned to `#v1` stay on Astro 6 and are unaffected — migrate them deliberately,
 > one at a time (bump `astro` to `^7`, repoint the dep to `#v2`, reinstall).
+>
+> The `chokidar: ^5.0.0` override is required: Astro 7's Vite uses chokidar 5,
+> while `@tabler/icons-webfont`'s `nunjucks` declares an (unused) optional peer on
+> chokidar 3 — the resulting two-version tree yields a lockfile `npm ci` rejects,
+> so the override collapses it to one.
 
 ## What it provides
 
