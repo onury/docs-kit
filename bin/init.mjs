@@ -10,7 +10,7 @@
 //   --title "Name"   Site title (default: Title-cased package name)
 //   --repo owner/rp  GitHub repo for the social link (default: from package.json)
 //   --branch name    Branch the deploy workflow triggers on (default: current git branch)
-//   --ref spec       Kit dependency spec (default: github:onury/docs-kit#v1)
+//   --ref spec       Kit dependency spec (default: github:onury/docs-kit#v2)
 //   --local          Use a local file: dep (file:../../docs-kit) for development
 //   --force          Overwrite an existing site/ directory
 //
@@ -103,7 +103,7 @@ const kitRef = args.local
   ? 'file:../../docs-kit'
   : args.ref
     ? String(args.ref)
-    : 'github:onury/docs-kit#v1';
+    : 'github:onury/docs-kit#v2';
 const defaultBranch = detectBranch();
 const hasApi =
   existsSync(join(projectRoot, 'src/index.ts')) && existsSync(join(projectRoot, 'tsconfig.build.json'));
