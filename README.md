@@ -100,6 +100,7 @@ Thin and self-contained — the only shared piece is the theme (CSS string paths
 ```js
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { unified } from '@astrojs/markdown-remark';
 import { createStarlightTypeDocPlugin } from 'starlight-typedoc';
 
 const [starlightTypeDoc, typeDocSidebarGroup] = createStarlightTypeDocPlugin();
@@ -108,7 +109,7 @@ const [starlightTypeDoc, typeDocSidebarGroup] = createStarlightTypeDocPlugin();
 export default defineConfig({
   site: 'https://onury.io',
   base: '/myproject',
-  markdown: { remarkPlugins: [remarkDropConstructorsHeading] },
+  markdown: { processor: unified({ remarkPlugins: [remarkDropConstructorsHeading] }) },
   integrations: [
     starlight({
       title: 'MyProject',

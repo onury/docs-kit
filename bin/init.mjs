@@ -156,7 +156,8 @@ function renderAstroConfig() {
     : sidebarItems;
 
   const apiImport = hasApi
-    ? "import { createStarlightTypeDocPlugin } from 'starlight-typedoc';\n"
+    ? "import { unified } from '@astrojs/markdown-remark';\n" +
+      "import { createStarlightTypeDocPlugin } from 'starlight-typedoc';\n"
     : '';
   const apiSetup = hasApi
     ? '\nconst [starlightTypeDoc, typeDocSidebarGroup] = createStarlightTypeDocPlugin();\n' +
@@ -179,7 +180,7 @@ function renderAstroConfig() {
       '}\n'
     : '';
   const markdownLine = hasApi
-    ? '  markdown: { remarkPlugins: [remarkDropConstructorsHeading] },\n'
+    ? '  markdown: { processor: unified({ remarkPlugins: [remarkDropConstructorsHeading] }) },\n'
     : '';
   const pluginsBlock = hasApi
     ? '      plugins: [\n' +
